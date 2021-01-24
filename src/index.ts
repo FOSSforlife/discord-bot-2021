@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import {
   AkairoClient,
   CommandHandler,
@@ -7,10 +8,11 @@ import {
 import config from './config';
 import * as path from 'path';
 
-class MyClient extends AkairoClient {
+export class MyClient extends AkairoClient {
   commandHandler: CommandHandler;
   inhibitorHandler: InhibitorHandler;
   listenerHandler: ListenerHandler;
+  db: PrismaClient;
 
   constructor() {
     super(
@@ -39,6 +41,8 @@ class MyClient extends AkairoClient {
     });
     this.commandHandler.useListenerHandler(this.listenerHandler);
     this.listenerHandler.loadAll();
+
+    this.db = new PrismaClient();
   }
 }
 
